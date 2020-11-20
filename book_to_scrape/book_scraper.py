@@ -78,24 +78,24 @@ class Book(Scraper):
             cls.get_metadata_by_text('Price (excl. tax)', metadata_table)[1:]
         )
 
-    @classmethod
-    def get_metadata_by_text(cls, text: str, metadata_table: Tag) -> str:
+    @staticmethod
+    def get_metadata_by_text(text: str, metadata_table: Tag) -> str:
         return metadata_table.find('th', text=text).find_next('td').text
 
-    @classmethod
-    def get_number_available(cls, soup: BeautifulSoup) -> int:
+    @staticmethod
+    def get_number_available(soup: BeautifulSoup) -> int:
         return int(
             re.search(
                 r'\d+', soup.find('p', class_='instock availability').text
             ).group(0)
         )
 
-    @classmethod
-    def get_description(cls, soup: BeautifulSoup) -> str:
+    @staticmethod
+    def get_description(soup: BeautifulSoup) -> str:
         return soup.find('div', id='product_description').find_next('p').text
 
-    @classmethod
-    def get_category(cls, soup: BeautifulSoup) -> str:
+    @staticmethod
+    def get_category(soup: BeautifulSoup) -> str:
         return (
             soup.find('ul', class_='breadcrumb').find_all('li')[2].text.strip()
         )
