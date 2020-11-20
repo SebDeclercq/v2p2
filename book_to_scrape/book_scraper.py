@@ -1,6 +1,6 @@
 from __future__ import annotations
-from dataclasses import dataclass, fields
-from typing import ClassVar, Dict, Sequence, Union
+from dataclasses import asdict, dataclass
+from typing import ClassVar, Dict, Union
 import re
 from bs4 import BeautifulSoup
 from bs4.element import Tag
@@ -32,17 +32,15 @@ class Book(Scraper):
         'five': 5,
     }
 
-    @classmethod
-    def get_field_names(cls) -> Sequence[str]:
-        return tuple(field.name for field in fields(cls))
+    @property
+    def as_dict(self) -> BookMetadata:
+        return asdict(self)
 
     @classmethod
     def fetch_and_create(cls, url: str) -> Book:
-        metadata: Dict[str, str] = {
-            'product_page_url': cls.CATALOGUE_URL + url
-        }
+        metadata: BookMetadata = {'product_page_url': cls.CATALOGUE_URL + url}
         metadata.update(cls.parse_response(cls.fetch(url)))
-        return cls(**metadata)
+        return cls(**metadata)  # type: ignore
 
     @classmethod
     def parse_response(cls, resp: Response) -> BookMetadata:
