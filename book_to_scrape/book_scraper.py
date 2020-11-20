@@ -60,9 +60,9 @@ class Book(Scraper):
             image_url=cls.get_image_url(soup),
         )
 
-    @classmethod
-    def get_title(cls, soup: BeautifulSoup) -> str:
-        soup.find('div', class_='product_main').h1.text
+    @staticmethod
+    def get_title(soup: BeautifulSoup) -> str:
+        return soup.find('div', class_='product_main').h1.text
 
     @classmethod
     def get_upc(cls, metadata_table: Tag) -> str:
